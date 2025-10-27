@@ -1,0 +1,32 @@
+
+<div class="bg-slate-800/70 border border-slate-700 rounded-lg p-6 shadow-xl animate-fade-in">
+  <h3 class="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    Pipeline Complete: Secure Outputs Generated
+  </h3>
+  <div class="space-y-4">
+    <div class="p-3 bg-slate-900 rounded-md">
+      <label class="text-sm font-semibold text-cyan-400 block">Polygenic Risk Score (Encrypted)</label>
+      <p class="text-xs md:text-sm text-slate-300 font-mono break-all mt-1">{{ outputs().polygenicRiskScore }}</p>
+    </div>
+    <div class="p-3 bg-slate-900 rounded-md">
+      <label class="text-sm font-semibold text-cyan-400 block">Evidence Ledger (Blockchain Hash)</label>
+      <p class="text-xs md:text-sm text-slate-300 font-mono break-all mt-1">{{ outputs().evidenceLedger }}</p>
+    </div>
+    <div class="p-3 bg-slate-900 rounded-md">
+      <label class="text-sm font-semibold text-cyan-400 block">Federal Evidence Stack Metadata (Signed)</label>
+      <p class="text-xs md:text-sm text-slate-300 font-mono break-all mt-1">{{ outputs().fesMetadata }}</p>
+    </div>
+  </div>
+</div>
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+</style>

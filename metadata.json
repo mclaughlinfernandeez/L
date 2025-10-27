@@ -1,0 +1,5 @@
+{
+  "name": "Secure Risk Scoring Platform",
+  "description": "A dashboard visualizing the RIGOR-PRS-Secure++ algorithm, a forward-looking solution for securing sensitive genomic data against both current and future quantum computing threats through a multi-stage, post-quantum cryptographic pipeline.",
+  "requestFramePermissions": []
+}
