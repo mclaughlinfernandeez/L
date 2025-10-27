@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, signal, computed } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { PhaseCardComponent } from '../phase-card/phase-card.component';
 import { OutputDisplayComponent } from '../output-display/output-display.component';
+import { SimulationControlsComponent, SimulationParams } from '../simulation-controls/simulation-controls.component';
 
 export interface PipelinePhase {
   phase: number;
@@ -21,7 +22,7 @@ type SimulationStatus = 'idle' | 'running' | 'complete';
 @Component({
   selector: 'app-pipeline',
   standalone: true,
-  imports: [CommonModule, PhaseCardComponent, OutputDisplayComponent],
+  imports: [CommonModule, PhaseCardComponent, OutputDisplayComponent, SimulationControlsComponent],
   templateUrl: './pipeline.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -82,7 +83,7 @@ export class PipelineComponent {
     return 'pending';
   }
 
-  runSimulation(): void {
+  runSimulation(params: SimulationParams): void {
     if (this.isRunning()) return;
 
     this.simulationStatus.set('running');
@@ -91,6 +92,8 @@ export class PipelineComponent {
     this.phaseDurations.set(new Array(this.phases.length).fill(null));
     this.phaseStartTimes = [];
     this.phaseStartTimes[0] = performance.now();
+    
+    const interval = this.calculateInterval(params);
 
     this.simulationInterval = setInterval(() => {
       this.currentPhaseIndex.update(i => {
@@ -112,7 +115,25 @@ export class PipelineComponent {
           return i + 1; // Mark last phase as complete for getPhaseStatus
         }
       });
-    }, 1800);
+    }, interval);
+  }
+
+  private calculateInterval(params: SimulationParams): number {
+    const baseInterval = 1200; // ms
+    let dataSizeMultiplier = 1.0;
+    let pqcComplexityMultiplier = 1.0;
+
+    switch (params.dataSize) {
+      case 'medium': dataSizeMultiplier = 1.5; break;
+      case 'large': dataSizeMultiplier = 2.0; break;
+    }
+
+    switch (params.pqcComplexity) {
+      case 'enhanced': pqcComplexityMultiplier = 1.3; break;
+      case 'paranoid': pqcComplexityMultiplier = 1.8; break;
+    }
+
+    return baseInterval * dataSizeMultiplier * pqcComplexityMultiplier;
   }
 
   private completeSimulation(): void {
